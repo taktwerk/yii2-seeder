@@ -35,9 +35,11 @@ class SeederController extends Controller
     public $seederNamespace = 'app\seeder';
     public $tablesPath = '@app/seeder/tables';
     public $tableSeederNamespace = 'app\seeder\tables';
+    public $seedFolder = 'seeds';
     public $modelNamespace = 'app';
     public $templateFile = '@mootensai/seeder/views/createTableSeeder.php';
     public $databaseFile = '@mootensai/seeder/views/DatabaseSeeder.php';
+    public $numRows = 10;
 
     /** Seeder on YII_ENV === 'prod' */
     public $runOnProd;
@@ -45,9 +47,28 @@ class SeederController extends Controller
     /** @var ActiveRecord */
     protected $model = null;
 
+    public function beforeAction($action)
+    {
+        $this->seederPath = $this->seederPath.DIRECTORY_SEPARATOR.$this->seedFolder;
+        $this->modelNamespace = $this->seederNamespace;
+        $this->seederNamespace = $this->seederNamespace.'\\'.$this->seedFolder;
+        $this->tablesPath = $this->seederPath.'/tables';
+        $this->tableSeederNamespace = $this->seederNamespace.'\tables';
+        return parent::beforeAction($action);
+    }
+
     public function options($actionID)
     {
-        return ['runOnProd'];
+        return [
+            'runOnProd', 
+            'modelNamespace', 
+            'seederPath', 
+            'tableSeederNamespace', 
+            'seederNamespace', 
+            'numRows', 
+            'tablesPath',
+            'seedFolder'
+        ];
     }
 
     protected function getClass($path, $end = "\n")
@@ -112,9 +133,9 @@ class SeederController extends Controller
      * @return int ExitCode::OK
      * @throws Exception if the name argument is invalid.
      */
-    public function actionCreate($modelName)
+    public function actionCreate($modelName = null)
     {
-
+        $this->createDataBaseSeederFile();
         $modelNamespace = $this->modelNamespace;
 
         if (strpos($modelName, '/')) {
@@ -154,7 +175,6 @@ class SeederController extends Controller
             }
         }
 
-        $this->createDataBaseSeederFile();
 
         return ExitCode::OK;
     }

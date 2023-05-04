@@ -38,7 +38,7 @@ class <?= $className ?> extends TableSeeder
      */
     function run($count = 10)
     {
-        loop(function ($count) <?= count($vars) ? 'use ('. implode(', ', $vars) .') ' : null ?>{
+        loop(function ($i, $count) <?= count($vars) ? 'use ('. implode(', ', $vars) .') ' : null ?>{
             $this->insert(<?= $modelName ?>::tableName(), [
                 <?php
                     $i = 0;

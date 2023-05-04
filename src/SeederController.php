@@ -81,7 +81,7 @@ class SeederController extends Controller
         return null;
     }
 
-    public function actionSeed($name = null, $numRows = 10)
+    public function actionSeed($name = null)
     {
         if (YII_ENV_PROD && !$this->runOnProd) {
             $this->stdout("YII_ENV is set to 'prod'.\nUse seeder is not possible on production systems. use '--runOnProd' to ignore it.\n");
@@ -95,12 +95,12 @@ class SeederController extends Controller
         if ($name) {
             $seederClass = "$this->tableSeederNamespace\\{$name}TableSeeder";
             if ($seeder = $this->getClass($seederClass)) {
-                $seeder->{$function ?? 'run'}($numRows);
+                $seeder->{$function ?? 'run'}($this->numRows);
             }
         } else {
             $databaseClass = "$this->seederNamespace\\DatabaseSeeder";
             if ($database = $this->getClass($databaseClass)) {
-                $database->{$function ?? 'run'}($numRows);
+                $database->{$function ?? 'run'}($this->numRows);
             }
         }
     }
@@ -249,7 +249,7 @@ class SeederController extends Controller
                     case 'mediumint':
                     case 'int':
                     case 'bigint':
-                        $faker = 'numberBetween(0, $count)';
+                        $faker = 'numberBetween(1, $count)';
                         break;
                     case 'date':
                         $faker = 'date()';

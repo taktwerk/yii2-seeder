@@ -1,8 +1,9 @@
 {
-    "name": "antonyz89/yii2-seeder",
+    "name": "mootensai/yii2-seeder",
     "description": "A tool to quickly populate database with fake data",
     "keywords": [
         "antonyz89",
+        "mootensai",
         "yii2",
         "extension",
         "widget",
@@ -13,8 +14,8 @@
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/antonyz89/yii2-seeder/issues",
-        "source": "https://github.com/antonyz89/yii2-seeder"
+        "issues": "https://github.com/mootensai/yii2-seeder/issues",
+        "source": "https://github.com/mootensai/yii2-seeder"
     },
     "authors": [
         {

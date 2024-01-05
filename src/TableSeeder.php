@@ -169,4 +169,37 @@ abstract class TableSeeder extends Migration
     {
         return new static();
     }
+
+    public function getUniqueManyManyId($count, $numberOfFK) : array {
+        $allFKList = [];
+
+        for ($i=1; $i <= $count; $i++) { 
+            $allFKList[$i] = $this->fillFKArray($count, $numberOfFK, $allFKList);
+        }
+
+        return $allFKList;
+    }
+
+    private function fillFKArray($count, $numberOfFK, $allFKList) {
+        $fkSequence = [];
+        for ($j=0; $j < $numberOfFK; $j++) { 
+            $fkSequence[$j] = $this->faker->numberBetween(1, $count);
+        }
+        
+        if ($this->isFKSequenceExist($fkSequence, $allFKList)) {
+            $fkSequence = $this->fillFKArray($count, $numberOfFK, $allFKList);
+        }
+
+        return $fkSequence;
+    }
+
+    private function isFKSequenceExist($FKArray, $allFKList) {
+        foreach ($allFKList as $item) {
+            if (join(',', $FKArray) == join(',', $item)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

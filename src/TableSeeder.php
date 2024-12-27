@@ -202,4 +202,6 @@ abstract class TableSeeder extends Migration
 
         return false;
     }
+    
+    abstract public function run($count = 10, $skipTruncate = false);
 }

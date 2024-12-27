@@ -95,7 +95,10 @@ class SeederController extends Controller
         $function = $explode[1] ?? null;
 
         $this->skipTruncate = $skipTruncate;
-        $this->numRows = $numRows;
+
+        if ($this->numRows == 10 && $numRows != 10) {
+            $this->numRows = $numRows;
+        }
 
         if ($name) {
             $seederClass = "$this->tableSeederNamespace\\{$name}TableSeeder";

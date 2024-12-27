@@ -40,6 +40,7 @@ class SeederController extends Controller
     public $templateFile = '@mootensai/seeder/views/createTableSeeder.php';
     public $databaseFile = '@mootensai/seeder/views/DatabaseSeeder.php';
     public $numRows = 10;
+    public $skipTruncate = false;
 
     /** Seeder on YII_ENV === 'prod' */
     public $runOnProd;
@@ -81,7 +82,7 @@ class SeederController extends Controller
         return null;
     }
 
-    public function actionSeed($name = null)
+    public function actionSeed($name = null, $numRows = 10, $skipTruncate = false)
     {
         if (YII_ENV_PROD && !$this->runOnProd) {
             $this->stdout("YII_ENV is set to 'prod'.\nUse seeder is not possible on production systems. use '--runOnProd' to ignore it.\n");
@@ -92,15 +93,18 @@ class SeederController extends Controller
         $name = $explode[0];
         $function = $explode[1] ?? null;
 
+        $this->skipTruncate = $skipTruncate;
+        $this->numRows = $numRows;
+
         if ($name) {
             $seederClass = "$this->tableSeederNamespace\\{$name}TableSeeder";
             if ($seeder = $this->getClass($seederClass)) {
-                $seeder->{$function ?? 'run'}($this->numRows);
+                $seeder->{$function ?? 'run'}($this->numRows, $this->skipTruncate);
             }
         } else {
             $databaseClass = "$this->seederNamespace\\DatabaseSeeder";
             if ($database = $this->getClass($databaseClass)) {
-                $database->{$function ?? 'run'}($this->numRows);
+                $database->{$function ?? 'run'}($this->numRows, $this->skipTruncate);
             }
         }
     }

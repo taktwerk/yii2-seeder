@@ -64,7 +64,7 @@ abstract class TableSeeder extends Migration
         $this->checkMissingColumns($this->insertedColumns);
     }
 
-    abstract function run($count = 10);
+    abstract function run($count = 10, $skipTruncate = false);
 
     /**
      * @throws Exception
@@ -202,6 +202,4 @@ abstract class TableSeeder extends Migration
 
         return false;
     }
-    
-    abstract public function run($count = 10, $skipTruncate = false);
 }

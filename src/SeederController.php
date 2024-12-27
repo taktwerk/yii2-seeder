@@ -93,8 +93,10 @@ class SeederController extends Controller
         $explode = explode(':', $name);
         $name = $explode[0];
         $function = $explode[1] ?? null;
-
-        $this->skipTruncate = $skipTruncate;
+        
+        if ($this->skipTruncate == false && $skipTruncate != false) {
+            $this->skipTruncate = $skipTruncate;
+        }
 
         if ($this->numRows == 10 && $numRows != 10) {
             $this->numRows = $numRows;

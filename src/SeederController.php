@@ -68,7 +68,8 @@ class SeederController extends Controller
             'seederNamespace', 
             'numRows', 
             'tablesPath',
-            'seedFolder'
+            'seedFolder',
+            'skipTruncate'
         ];
     }
 

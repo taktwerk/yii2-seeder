@@ -7,10 +7,10 @@ yii2-seeder
 
 --
 
-[![Latest Stable Version](https://poser.pugx.org/mootensai/yii2-seeder/v/stable)](https://packagist.org/packages/mootensai/yii2-seeder)
-[![Total Downloads](https://poser.pugx.org/mootensai/yii2-seeder/downloads)](https://packagist.org/packages/mootensai/yii2-seeder)
-[![Latest Unstable Version](https://poser.pugx.org/mootensai/yii2-seeder/v/unstable)](https://packagist.org/packages/mootensai/yii2-seeder)
-[![License](https://poser.pugx.org/mootensai/yii2-seeder/license)](https://packagist.org/packages/mootensai/yii2-seeder)
+[![Latest Stable Version](https://poser.pugx.org/taktwerk/yii2-seeder/v/stable)](https://packagist.org/packages/taktwerk/yii2-seeder)
+[![Total Downloads](https://poser.pugx.org/taktwerk/yii2-seeder/downloads)](https://packagist.org/packages/taktwerk/yii2-seeder)
+[![Latest Unstable Version](https://poser.pugx.org/taktwerk/yii2-seeder/v/unstable)](https://packagist.org/packages/taktwerk/yii2-seeder)
+[![License](https://poser.pugx.org/taktwerk/yii2-seeder/license)](https://packagist.org/packages/taktwerk/yii2-seeder)
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -25,13 +25,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist mootensai/yii2-seeder dev-master
+php composer.phar require --prefer-dist taktwerk/yii2-seeder dev-master
 ```
 
 or add
 
 ```
-"mootensai/yii2-seeder": "dev-master"
+"taktwerk/yii2-seeder": "dev-master"
 ```
 
 to the require section of your `composer.json` file.
@@ -42,7 +42,7 @@ to the require section of your `composer.json` file.
 ```
 'controllerMap' => [
     'seeder' => [
-        'class' => 'mootensai\seeder\SeederController'
+        'class' => 'taktwerk\seeder\SeederController'
     ],
 ],
 ```
@@ -81,7 +81,7 @@ namespace console\seeder\tables;
 
 use common\models\user\User;
 use console\seeder\DatabaseSeeder;
-use mootensai\seeder\TableSeeder;
+use taktwerk\seeder\TableSeeder;
 use Yii;
 
 class UserTableSeeder extends TableSeeder

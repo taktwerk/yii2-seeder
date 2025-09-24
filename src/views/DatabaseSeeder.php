@@ -4,7 +4,7 @@ echo "<?php\n";
 ?>
 namespace <?= $namespace ?>;
 
-use mootensai\seeder\TableSeeder;
+use taktwerk\seeder\TableSeeder;
 
 class DatabaseSeeder extends TableSeeder
 {

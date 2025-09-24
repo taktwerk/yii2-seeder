@@ -1,8 +1,8 @@
 <?php
 
-namespace mootensai\seeder;
+namespace taktwerk\seeder;
 
-use mootensai\seeder\helpers\CreatedAtUpdatedAt;
+use taktwerk\seeder\helpers\CreatedAtUpdatedAt;
 use Faker\Factory;
 use Faker\Generator;
 use Yii;
@@ -67,12 +67,34 @@ abstract class TableSeeder extends Migration
     abstract function run($count = 10, $skipTruncate = false);
 
     /**
+     * Override truncateTable to add CASCADE for PostgreSQL
+     * @param string $table
+     */
+    public function truncateTable($table)
+    {
+        if ($this->db->driverName === 'pgsql') {
+            // Use CASCADE for PostgreSQL to handle foreign key constraints
+            echo "    > truncate table $table with CASCADE...";
+            $time = microtime(true);
+            $this->db->createCommand("TRUNCATE TABLE " . $this->db->quoteTableName($table) . " CASCADE")->execute();
+            echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
+        } else {
+            // Use parent method for other databases
+            parent::truncateTable($table);
+        }
+    }
+
+    /**
      * @throws Exception
      * @throws NotSupportedException
      */
     public function disableForeignKeyChecks()
     {
-        $this->db->createCommand()->checkIntegrity(false)->execute();
+        // PostgreSQL doesn't support disabling triggers without superuser privileges
+        // So we skip this for PostgreSQL
+        if ($this->db->driverName !== 'pgsql') {
+            $this->db->createCommand()->checkIntegrity(false)->execute();
+        }
     }
 
     /**
@@ -81,7 +103,11 @@ abstract class TableSeeder extends Migration
      */
     public function enableForeignKeyChecks()
     {
-        $this->db->createCommand()->checkIntegrity(true)->execute();
+        // PostgreSQL doesn't support enabling triggers without superuser privileges
+        // So we skip this for PostgreSQL
+        if ($this->db->driverName !== 'pgsql') {
+            $this->db->createCommand()->checkIntegrity(true)->execute();
+        }
     }
 
     public function insert($table, $columns)

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace mootensai\seeder\helpers;
+namespace taktwerk\seeder\helpers;
 
 trait WeightedRandom
 {

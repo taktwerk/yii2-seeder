@@ -1,6 +1,6 @@
 <?php
 
-namespace mootensai\seeder\helpers;
+namespace taktwerk\seeder\helpers;
 
 use Faker\Provider\DateTime;
 

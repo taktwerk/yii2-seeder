@@ -1,9 +1,8 @@
 {
-    "name": "mootensai/yii2-seeder",
+    "name": "taktwerk/yii2-seeder",
     "description": "A tool to quickly populate database with fake data",
     "keywords": [
-        "antonyz89",
-        "mootensai",
+        "taktwerk",
         "yii2",
         "extension",
         "widget",
@@ -14,8 +13,8 @@
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/mootensai/yii2-seeder/issues",
-        "source": "https://github.com/mootensai/yii2-seeder"
+        "issues": "https://github.com/taktwerk/yii2-seeder/issues",
+        "source": "https://github.com/taktwerk/yii2-seeder"
     },
     "authors": [
         {
@@ -31,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "mootensai\\seeder\\": "src"
+            "taktwerk\\seeder\\": "src"
         },
         "files": [
             "functions.php"

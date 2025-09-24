@@ -1,6 +1,6 @@
 <?php
 
-namespace mootensai\seeder;
+namespace taktwerk\seeder;
 
 use Yii;
 use yii\console\Controller;
@@ -14,7 +14,7 @@ use yii\helpers\Inflector;
 
 /**
  * Class SeederController
- * @package mootensai\seeder
+ * @package taktwerk\seeder
  *
  * @property string $seederPath
  * @property string $seederNamespace
@@ -37,8 +37,8 @@ class SeederController extends Controller
     public $tableSeederNamespace = 'app\seeder\tables';
     public $seedFolder = 'seeds';
     public $modelNamespace = 'app';
-    public $templateFile = '@mootensai/seeder/views/createTableSeeder.php';
-    public $databaseFile = '@mootensai/seeder/views/DatabaseSeeder.php';
+    public $templateFile = '@taktwerk/seeder/views/createTableSeeder.php';
+    public $databaseFile = '@taktwerk/seeder/views/DatabaseSeeder.php';
     public $numRows = 10;
     public $skipTruncate = false;
 

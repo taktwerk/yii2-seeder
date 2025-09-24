@@ -1,6 +1,6 @@
 <?php
 /**
- * This view is used by mootensai\seeder\SeederController.php.
+ * This view is used by taktwerk\seeder\SeederController.php.
  *
  * The following variables are available in this view:
  */
@@ -21,7 +21,7 @@ use yii\helpers\Inflector;
 $vars = [];
 ?>
 
-use mootensai\seeder\TableSeeder;
+use taktwerk\seeder\TableSeeder;
 <?php foreach ($fields as $column => $properties) {
     if($foreign = $properties->foreign)
         echo "use {$foreign::className()};\n";

@@ -27,6 +27,9 @@ abstract class TableSeeder extends Migration
     protected $insertedColumns = [];
     protected $batch = [];
 
+    // Static to ensure truncate only happens once across all seeder instances
+    protected static $hasAlreadyTruncated = false;
+
     /**
      * TableSeeder constructor.
      * @param array $config
@@ -44,7 +47,31 @@ abstract class TableSeeder extends Migration
      */
     public function __destruct()
     {
-        if (!$this->skipTruncateTables) {
+        $this->processBatch();
+    }
+
+    /**
+     * Flush batch data immediately instead of waiting for __destruct()
+     */
+    public function flush()
+    {
+        
+        $this->processBatch();
+        $this->batch = []; // Clear batch after processing
+    }
+
+    /**
+     * Process and save all batched data
+     */
+    protected function processBatch()
+    {
+        if (empty($this->batch)) {
+            return;
+        }
+
+        // Only truncate tables once to prevent CASCADE from deleting parent table data
+        if (!$this->skipTruncateTables && !self::$hasAlreadyTruncated) {
+            self::$hasAlreadyTruncated = true;
             $this->disableForeignKeyChecks();
             foreach ($this->batch as $table => $values) {
                 $this->truncateTable($table);
@@ -67,16 +94,17 @@ abstract class TableSeeder extends Migration
     abstract function run($count = 10, $skipTruncate = false);
 
     /**
-     * Override truncateTable to add CASCADE for PostgreSQL
+     * Override truncateTable to add CASCADE for PostgreSQL and RESTART IDENTITY
      * @param string $table
      */
     public function truncateTable($table)
     {
         if ($this->db->driverName === 'pgsql') {
             // Use CASCADE for PostgreSQL to handle foreign key constraints
-            echo "    > truncate table $table with CASCADE...";
+            // RESTART IDENTITY resets auto-increment sequences
+            echo "    > truncate table $table...";
             $time = microtime(true);
-            $this->db->createCommand("TRUNCATE TABLE " . $this->db->quoteTableName($table) . " CASCADE")->execute();
+            $this->db->createCommand("TRUNCATE TABLE " . $this->db->quoteTableName($table) . " RESTART IDENTITY CASCADE")->execute();
             echo ' done (time: ' . sprintf('%.3f', microtime(true) - $time) . "s)\n";
         } else {
             // Use parent method for other databases
@@ -90,9 +118,12 @@ abstract class TableSeeder extends Migration
      */
     public function disableForeignKeyChecks()
     {
-        // PostgreSQL doesn't support disabling triggers without superuser privileges
-        // So we skip this for PostgreSQL
-        if ($this->db->driverName !== 'pgsql') {
+        if ($this->db->driverName === 'pgsql') {
+            // PostgreSQL: Disable foreign key checks using session_replication_role
+            $this->db->createCommand('SET session_replication_role = replica;')->execute();
+        } elseif ($this->db->driverName === 'mysql') {
+            $this->db->createCommand('SET FOREIGN_KEY_CHECKS = 0;')->execute();
+        } else {
             $this->db->createCommand()->checkIntegrity(false)->execute();
         }
     }
@@ -103,9 +134,12 @@ abstract class TableSeeder extends Migration
      */
     public function enableForeignKeyChecks()
     {
-        // PostgreSQL doesn't support enabling triggers without superuser privileges
-        // So we skip this for PostgreSQL
-        if ($this->db->driverName !== 'pgsql') {
+        if ($this->db->driverName === 'pgsql') {
+            // PostgreSQL: Re-enable foreign key checks
+            $this->db->createCommand('SET session_replication_role = DEFAULT;')->execute();
+        } elseif ($this->db->driverName === 'mysql') {
+            $this->db->createCommand('SET FOREIGN_KEY_CHECKS = 1;')->execute();
+        } else {
             $this->db->createCommand()->checkIntegrity(true)->execute();
         }
     }

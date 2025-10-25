@@ -31,6 +31,15 @@ abstract class TableSeeder extends Migration
     protected static $hasAlreadyTruncated = false;
 
     /**
+     * Reset the truncate flag to allow truncating again
+     * Call this at the beginning of DatabaseSeeder::run()
+     */
+    public static function resetTruncateFlag()
+    {
+        self::$hasAlreadyTruncated = false;
+    }
+
+    /**
      * TableSeeder constructor.
      * @param array $config
      */
